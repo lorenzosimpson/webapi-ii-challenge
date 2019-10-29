@@ -42,5 +42,25 @@ router.post('/', (req, res) => {
     .catch(err => res.status(500).json({ error: "There was an error while saving the post to the database" }))
 })
 
+router.post('/:id/comments', (req, res) => {
+    const id = req.params.id;
+    const post_id = id;
+    const commentObj = {...req.body, post_id};
+
+    !commentObj.text ? res.status(400).json({ errorMessage: "Please provide text for the comment." })
+
+    : 
+
+    db.findById(id)
+    .then(post => {
+        post.length ? 
+        db.insertComment(commentObj)
+        .then(insertedComment => res.status(201).json(commentObj))
+        :
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    })
+    .catch(err => res.status(500).json({ error: "There was an error while saving the comment to the database" }))
+})
+
 
 module.exports = router;
