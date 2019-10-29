@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('./data/db');
 
+// ========= GET REQUESTS ==========
 
 router.get('/', (req, res) => {
     db.find()
@@ -33,6 +34,10 @@ router.get('/:id/comments', (req, res) => {
 
 })
 
+
+
+// ========= POST REQUESTS ==========
+
 router.post('/', (req, res) => {
     const newPost = req.body;
     !newPost.title || !newPost.contents ? res.status(400).json({ error: "Please provide title and contents for the post." })
@@ -61,6 +66,8 @@ router.post('/:id/comments', (req, res) => {
 })
 
 
+// ========= PUT REQUESTS ==========
+
 router.put('/:id', (req, res) => {
     const id = req.params.id;
     const newObj = req.body;
@@ -79,6 +86,9 @@ router.put('/:id', (req, res) => {
     })
     .catch(err => res.status(500).json({ error: "The post information could not be modified." }))
 })
+
+
+// ========= DELETE REQUESTS ==========
 
 router.delete('/:id', (req, res) => {
     const id = req.params.id;
